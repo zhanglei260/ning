@@ -18,7 +18,7 @@ import addcases from './pages/plugin/home.vue'
 Vue.component('addcase',addcases)
 import crms from './pages/basics/home.vue'
 Vue.component('crm',crms)
-import mys from './pages/component/home.vue'
+import mys from './pages/my/my.vue'
 Vue.component('my',mys)
 
 import cuCustom from './colorui/components/cu-custom.vue'

@@ -108,6 +108,14 @@
         ,{
             "path" : "pages/my/my",
             "style" : {}
+        },
+		{
+		    "path" : "pages/my/login",
+		    "style" : {}
+		}
+        ,{
+            "path" : "pages/my/reg",
+            "style" : {}
         }
     ],
 	"globalStyle": {
