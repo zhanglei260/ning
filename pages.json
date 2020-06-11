@@ -105,6 +105,10 @@
             "path" : "pages/index/ning",
             "style" : {}
         }
+        ,{
+            "path" : "pages/my/my",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"mp-alipay": {
