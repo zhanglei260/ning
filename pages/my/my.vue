@@ -40,7 +40,7 @@
 				</view>
 			</view>
 			<view class="cu-item">
-				<navigator class="content" hover-class="none" url="../list/list" open-type="redirect">
+				<navigator class="content" hover-class="none" url="../book/booklist" open-type="redirect">
 					<text class="cuIcon-remind text-orange"></text>
 					<text class="text-grey">我的预约</text>
 				</navigator>

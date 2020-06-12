@@ -125,6 +125,18 @@
             "path" : "pages/case/case",
             "style" : {}
         }
+        ,{
+            "path" : "pages/book/book",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/book/booklist",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/case/caselist",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"mp-alipay": {

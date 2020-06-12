@@ -10,9 +10,9 @@ Vue.component('components',components)
 import plugin from './pages/plugin/home.vue'
 Vue.component('plugin',plugin)
 
-import cases from './pages/basics/home.vue'
+import cases from './pages/case/caselist.vue'
 Vue.component('case',cases)
-import books from './pages/component/home.vue'
+import books from './pages/book/book.vue'
 Vue.component('book',books)
 import addcases from './pages/case/case.vue'
 Vue.component('addcase',addcases)
