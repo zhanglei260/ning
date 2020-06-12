@@ -117,6 +117,14 @@
             "path" : "pages/my/reg",
             "style" : {}
         }
+        ,{
+            "path" : "pages/crm/crm",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/case/case",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"mp-alipay": {

@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view >
 		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">登录</block>
@@ -65,14 +65,17 @@
 					success: (e) => {
 						if (e.data.code === 0) { //登录成功后改变vuex的状态，并退出登录页面  
 							const validUser = {
-								account: e.data.data.username,
+								username: e.data.data.username,
 								password: e.data.data.password,
 								fullname: e.data.data.fullname,
 								shopname: e.data.data.shopname,
 								expire_time: e.data.data.expire_time
 							}
 							validUser.hasLogin = true;
-							service.addUser(validUser);
+							service.setUser(validUser);
+							uni.navigateTo({
+								url: 'my'
+							});
 						} else {
 							uni.showToast({
 								icon: 'none',

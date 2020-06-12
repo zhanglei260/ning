@@ -1,42 +1,42 @@
 <template>
-	<view class="box">
+	<view>
 		<br />
 		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">我的</block>
 		</cu-custom>
-		<view v-if="!valid()" class="cu-list menu-avatar">
+		<view v-if="valid()" class="cu-list menu-avatar">
 			<view class="cu-item">
 				<view class="cu-avatar round lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);"></view>
 				<view class="content">
-					<view class="text-black">杨宁{{fullname}}</view>
+					<view class="text-black">{{fullname}}</view>
 					<view class="text-gray text-sm flex">
 						<view class="text-cut">
-							账号:yangning{{account}}
+							账号:{{username}}
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
 
-		<view v-if="!valid()" class="cu-bar bg-white solid-bottom margin-top">
+		<view v-if="valid()" class="cu-bar bg-white solid-bottom margin-top">
 			<view class="action">
 				<text class="cuIcon-title text-orange"></text> 基本信息
 			</view>
 		</view>
-		<view v-if="!valid()" class="cu-list menu">
+		<view v-if="valid()" class="cu-list menu">
 			<view class="cu-item">
 				<view class="content">
 					<text class="cuIcon-shop text-green"></text>
 					<text class="text-grey padding-right">所属门诊</text>
-					<text class="text-grey text-bold">中岳口腔 {{shopname}}</text>
+					<text class="text-grey text-bold">{{shopname}}</text>
 				</view>
 			</view>
 			<view class="cu-item">
 				<view class="content">
 					<text class="cuIcon-time text-yellow"></text>
 					<text class="text-grey padding-right">到期时间</text>
-					<text class="text-grey text-bold">2020-06-11 13:14:15{{expire_time}}</text>
+					<text class="text-grey text-bold">{{expire_time}}</text>
 				</view>
 			</view>
 			<view class="cu-item">
@@ -79,7 +79,7 @@
 			valid: function() {
 				return function(val) {
 					const validUser = service.getUsers();
-					this.account = validUser.account;
+					this.username = validUser.username;
 					this.shopname = validUser.shopname;
 					this.fullname = validUser.fullname;
 					this.password = validUser.password;
@@ -98,7 +98,7 @@
 			return {
 				fullname: '',
 				shopname: '',
-				account: '',
+				username: '',
 				password: '',
 				expire_time: '',
 				hasLogin: false
@@ -115,7 +115,7 @@
 				 * 如果需要强制登录跳转回登录页面
 				 */
 				const datas = {
-					account: '',
+					username: '',
 					password: '',
 					fullname: '',
 					shopname: '',

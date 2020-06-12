@@ -14,7 +14,7 @@
 			</view>
 			<view :class="PageCur=='addcase'?'action  add-action text-green':'action  add-action'" @click="NavChange" data-cur="addcase">
 				<button class="cu-btn cuIcon-add bg-green shadow"></button>
-				病例
+				录病例
 			</view>
 			<view :class="PageCur=='crm'?'action text-green':'action'" @click="NavChange" data-cur="crm">
 				<view class="cuIcon-group_fill"></view>会员
