@@ -1,7 +1,6 @@
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
-			<block slot="backText">返回</block>
+		<cu-custom bgColor="bg-gradual-blue" >
 			<block slot="content">录病例</block>
 		</cu-custom>
 		<form>
@@ -94,6 +93,7 @@
 				fullname: '',
 				mobile: '',
 				age: '',
+				remark:'',
 				crm_user_uuid: '',
 				left_top: '',
 				right_top: '',

@@ -1,7 +1,6 @@
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
-			<block slot="backText">返回</block>
+		<cu-custom bgColor="bg-gradual-blue" >
 			<block slot="content">预约</block>
 		</cu-custom>
 		<form>

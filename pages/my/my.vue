@@ -1,8 +1,7 @@
 <template>
 	<view>
 		<br />
-		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
-			<block slot="backText">返回</block>
+		<cu-custom bgColor="bg-gradual-blue">
 			<block slot="content">我的</block>
 		</cu-custom>
 		<view v-if="valid()" class="cu-list menu-avatar">
@@ -122,8 +121,8 @@
 					hasLogin: false
 				}
 				service.setUser(datas);
-				uni.reLaunch({
-					url: '../index/ning',
+				uni.navigateTo({
+					url: '../index/index?PageCur=my',
 				});
 			}
 		}

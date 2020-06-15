@@ -1,23 +1,18 @@
 import Vue from 'vue'
 import App from './App'
 
-import basics from './pages/basics/home.vue'
-Vue.component('basics',basics)
-
-import components from './pages/component/home.vue'
-Vue.component('components',components)
-
-import plugin from './pages/plugin/home.vue'
-Vue.component('plugin',plugin)
+import addcases from './pages/case/case.vue'
+Vue.component('addcase',addcases)
 
 import cases from './pages/case/caselist.vue'
 Vue.component('case',cases)
+
 import books from './pages/book/book.vue'
 Vue.component('book',books)
-import addcases from './pages/case/case.vue'
-Vue.component('addcase',addcases)
+
 import crms from './pages/crm/crm.vue'
 Vue.component('crm',crms)
+
 import mys from './pages/my/my.vue'
 Vue.component('my',mys)
 

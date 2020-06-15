@@ -30,8 +30,8 @@ const setUser = function(userInfo) {
 	uni.setStorageSync(USERS_KEY, JSON.stringify(users));
 }
 
-//const getAjaxUrl = 'http://94.191.15.174:8090/api/';
-const getAjaxUrl='http://localhost:8090/api/';
+const getAjaxUrl = 'http://94.191.15.174:8090/api/';
+//const getAjaxUrl='http://10.1.131.21:8090/api/';
 
 export default {
 	getUsers,

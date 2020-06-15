@@ -1,7 +1,6 @@
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
-			<block slot="backText">返回</block>
+		<cu-custom bgColor="bg-gradual-blue">
 			<block slot="content">病例列表</block>
 		</cu-custom>
 		<form>
@@ -32,11 +31,9 @@
 					</view>
 				</picker>
 			</view>
-
-
 		</form>
-		<view class="cu-card article" v-for="(item,index) in listcase">
-			<view class="cu-item shadow">
+		<view class="cu-card article" v-for="(item,index) in listcase" @click="bindDetails(item.uuid)" v-bind:id='index' >
+			<view class="cu-item shadow margin-bottom">
 				<view class="title">
 					<view class="text-cut">
 						<view class="fl">{{item.fullname}}</view>
@@ -44,13 +41,18 @@
 					</view>
 				</view>
 				<view class="content">
-					<view class="text-content">
+					<view class="text-content" style="width: 100%;">
 						<view>手机号码:{{item.mobile}}</view>
-						<view>主诉:{{item.chief_complaint}}</view>
-						<view>诊断:{{item.short_content}}</view>
+						<view>主诉:{{item.chief_complaint}}
+						<button class="cu-btn bg-blue fr">查看详情</button>
+						</view>
+						<view>
+							诊断:{{item.short_content}} 
+						</view>
 					</view>
 				</view>
 			</view>
+			<view v-if="index == (listcase.length-1)" class="text-center text-gray tabbar foot margin">-------已经到底了-------</view>
 		</view>
 	</view>
 </template>
@@ -68,6 +70,9 @@
 			};
 		},
 		onLoad: function(option) {
+			//初始化时间
+			//this.start_date = this.DateFormat();
+			this.end_date = this.DateFormat();
 			//开始下拉刷新
 			this.bindSearch();
 		},
@@ -106,6 +111,7 @@
 									tempdata["create_time"] = e.data.data[i].create_time;
 									tempdata["chief_complaint"] = e.data.data[i].chief_complaint;
 									tempdata["short_content"] = e.data.data[i].short_content;
+									tempdata["uuid"] = e.data.data[i].uuid;
 
 									this.listcase.push(tempdata);
 								}
@@ -126,6 +132,38 @@
 			},
 			EndDateChange(e) {
 				this.end_date = e.detail.value
+			},
+			bindDetails(e) {
+				const validUser = service.getUsers();
+				if (validUser.username == undefined) {
+					uni.showToast({
+						icon: 'none',
+						title: '请先登录后再查询'
+					});
+					return;
+				}
+				uni.navigateTo({
+					url: '/pages/case/casedetail?main_uuid=' + e,
+				});
+			},
+			DateFormat() {
+				const date = new Date();
+				const year = date.getFullYear();
+				const month = date.getMonth() + 1;
+				const day = date.getDate();
+				
+				if(month < 10 &&day.length < 10){
+					return year + '-0' + month + '-0' + day;
+				}
+				else if(month< 10 ){
+					return year + '-0' + month + '-' + day;
+				}
+				else if(day.length < 10){
+					return year + '-' + month + '-0' + day;
+				}
+				else{
+					return year + '-' + month + '-' + day;
+				}
 			}
 		}
 	}

@@ -26,8 +26,8 @@
 		name: 'cu-custom',
 		computed: {
 			style() {
-				var StatusBar= this.StatusBar;
-				var CustomBar= this.CustomBar;
+				var StatusBar = this.StatusBar;
+				var CustomBar = this.CustomBar;
 				var bgImage = this.bgImage;
 				var style = `height:${CustomBar}px;padding-top:${StatusBar}px;`;
 				if (this.bgImage) {
@@ -49,12 +49,22 @@
 				type: String,
 				default: ''
 			},
+			url: {
+				type: String,
+				default: ''
+			}
 		},
 		methods: {
 			BackPage() {
-				uni.navigateBack({
-					delta: 1
-				});
+				if (this.url) {
+					uni.redirectTo({
+						url: this.url
+					})
+				} else {
+					uni.navigateBack({
+						delta: 1
+					});
+				}
 			}
 		}
 	}

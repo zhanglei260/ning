@@ -38,17 +38,17 @@
 		},
 		methods: {
 			bindLogin() {
-				if (this.username.length < 5) {
+				if (this.username.length < 1) {
 					uni.showToast({
 						icon: 'none',
-						title: '账号最短为 5 个字符'
+						title: '请输入账号'
 					});
 					return;
 				}
-				if (this.password.length < 6) {
+				if (this.password.length < 1) {
 					uni.showToast({
 						icon: 'none',
-						title: '密码最短为 6 个字符'
+						title: '请输入密码'
 					});
 					return;
 				}
@@ -74,7 +74,7 @@
 							validUser.hasLogin = true;
 							service.setUser(validUser);
 							uni.navigateTo({
-								url: 'my'
+								url: '../index/index?PageCur=my'
 							});
 						} else {
 							uni.showToast({

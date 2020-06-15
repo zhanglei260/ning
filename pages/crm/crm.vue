@@ -1,7 +1,6 @@
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
-			<block slot="backText">返回</block>
+		<cu-custom bgColor="bg-gradual-blue">
 			<block slot="content">客户</block>
 		</cu-custom>
 		<form>
@@ -37,6 +36,7 @@
 					</view>
 				</view>
 			</view>
+			<view v-if="index == (listcrmuser.length-1)" class="text-center text-gray tabbar foot margin">-------已经到底了-------</view>
 		</view>
 	</view>
 </template>

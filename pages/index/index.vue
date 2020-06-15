@@ -1,26 +1,26 @@
 <template>
 	<view>
-		<basics v-if="PageCur=='basics'"></basics>
-		<components v-if="PageCur=='component'"></components>
-		<plugin v-if="PageCur=='plugin'"></plugin>
-		<view class="cu-bar tabbar bg-white shadow foot">
-			<view class="action" @click="NavChange" data-cur="basics">
-				<view class='cuIcon-cu-image'>
-					<image :src="'/static/tabbar/basics' + [PageCur=='basics'?'_cur':''] + '.png'"></image>
-				</view>
-				<view :class="PageCur=='basics'?'text-green':'text-gray'">元素</view>
+		<case v-if="PageCur=='case'"></case>
+		<book v-if="PageCur=='book'"></book>
+		<addcase v-if="PageCur=='addcase'"></addcase>
+		<crm v-if="PageCur=='crm'"></crm>
+		<my v-if="PageCur=='my'"></my>
+		<view class="cu-bar tabbar bg-black shadow foot">
+			<view :class="PageCur=='case'?'action text-green':'action'" @click="NavChange" data-cur="case">
+				<view class="cuIcon-camerafill"></view>病例
 			</view>
-			<view class="action" @click="NavChange" data-cur="component">
-				<view class='cuIcon-cu-image'>
-					<image :src="'/static/tabbar/component' + [PageCur == 'component'?'_cur':''] + '.png'"></image>
-				</view>
-				<view :class="PageCur=='component'?'text-green':'text-gray'">组件</view>
+			<view :class="PageCur=='book'?'action text-green':'action'" @click="NavChange" data-cur="book">
+				<view class="cuIcon-timefill"></view>预约
 			</view>
-			<view class="action" @click="NavChange" data-cur="plugin">
-				<view class='cuIcon-cu-image'>
-					<image :src="'/static/tabbar/plugin' + [PageCur == 'plugin'?'_cur':''] + '.png'"></image>
-				</view>
-				<view :class="PageCur=='plugin'?'text-green':'text-gray'">扩展</view>
+			<view :class="PageCur=='addcase'?'action  add-action text-green':'action  add-action'" @click="NavChange" data-cur="addcase">
+				<button class="cu-btn cuIcon-add bg-green shadow"></button>
+				录病例
+			</view>
+			<view :class="PageCur=='crm'?'action text-green':'action'" @click="NavChange" data-cur="crm">
+				<view class="cuIcon-group_fill"></view>会员
+			</view>
+			<view :class="PageCur=='my'?'action text-green':'action'" @click="NavChange" data-cur="my">
+				<view class="cuIcon-myfill"></view>我的
 			</view>
 		</view>
 	</view>
@@ -30,7 +30,12 @@
 	export default {
 		data() {
 		return {
-				PageCur: 'basics'
+				PageCur: 'addcase',
+			}
+		},
+		onLoad: function(option) {
+			if(option.PageCur!=undefined){
+				this.PageCur = option.PageCur;
 			}
 		},
 		methods: {
