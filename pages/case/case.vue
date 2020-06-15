@@ -35,18 +35,18 @@
 					<view class="grid text-center col-2">
 						<view>
 							<view class="padding bg-cyan text-black">
-								<input placeholder="右上" v-model="right_top" type="number" maxlength="1"></input>
+								<input placeholder="右上" v-model="right_top" type="number" maxlength="2"></input>
 							</view>
 							<view class="padding bg-olive text-black">
-								<input placeholder="右下" v-model="right_bottom" type="number" maxlength="1"></input>
+								<input placeholder="右下" v-model="right_bottom" type="number" maxlength="2"></input>
 							</view>
 						</view>
 						<view>
 							<view class="padding bg-olive">
-								<input placeholder="左上" v-model="left_top" type="number" maxlength="1"></input>
+								<input placeholder="左上" v-model="left_top" type="number" maxlength="2"></input>
 							</view>
 							<view class="padding bg-cyan">
-								<input placeholder="左下" v-model="left_bottom" type="number" maxlength="1"></input>
+								<input placeholder="左下" v-model="left_bottom" type="number" maxlength="2"></input>
 							</view>
 						</view>
 					</view>
@@ -65,11 +65,11 @@
 				<input placeholder="请输入备注" v-model="remark" type="text"></input>
 			</view>
 			<view class="cu-form-group" v-for="(item,index) in tooth_list" @click="delindex" v-bind:id='index'>
-				<view class="flex">
+				<view class="flex" style="width: 100%;">
 					<view class="flex-sub text-center padding-sm solid-right">{{item.tooth_position}} {{item.tooth_index}}</view>
-					<view class="flex-twice text-center padding-sm">
+					<view class="flex-twice text-center padding-sm" style="width: 65%;">
 						<view>
-							<view class="text-cut" style="width: 220px;">{{item.tooth_diagnosis}}</view>
+							<view class="text-cut">{{item.tooth_diagnosis}}</view>
 						</view>
 					</view>
 					<button class="cu-btn cuIcon bg-red sm fr margin-sm">
@@ -181,19 +181,19 @@
 					});
 					return;
 				}
-				if (this.left_top.length == 1) {
+				if (this.left_top.length > 0) {
 					this.tooth_position = '左上';
 					this.tooth_index = this.left_top;
 				}
-				if (this.left_bottom.length == 1) {
+				if (this.left_bottom.length > 0) {
 					this.tooth_position = '左下';
 					this.tooth_index = this.left_bottom;
 				}
-				if (this.right_top.length == 1) {
+				if (this.right_top.length > 0) {
 					this.tooth_position = '右上';
 					this.tooth_index = this.right_top;
 				}
-				if (this.right_bottom.length == 1) {
+				if (this.right_bottom.length > 0) {
 					this.tooth_position = '右下';
 					this.tooth_index = this.right_bottom;
 				}

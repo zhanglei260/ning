@@ -62,7 +62,7 @@
 					});
 					return;
 				}
-				if (this.shopname.length < 6) {
+				if (this.shopname.length < 1) {
 					uni.showToast({
 						icon: 'none',
 						title: '请输入门诊名称'
