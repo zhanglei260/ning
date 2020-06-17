@@ -51,7 +51,7 @@
 				<view class="content">
 					<text class="cuIcon-fork text-blue"></text>
 					<text class="text-grey padding-right">系统版本</text>
-					<text class="text-grey text-bold">V1.0.521</text>
+					<text class="text-grey text-bold">V1.2.1</text>
 				</view>
 			</view>
 			<view class="cu-item">
