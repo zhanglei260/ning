@@ -69,6 +69,7 @@
 								password: e.data.data.password,
 								fullname: e.data.data.fullname,
 								shopname: e.data.data.shopname,
+								head_url: e.data.data.head_url,
 								expire_time: e.data.data.expire_time
 							}
 							validUser.hasLogin = true;

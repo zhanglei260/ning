@@ -6,7 +6,7 @@
 		</cu-custom>
 		<view v-if="valid()" class="cu-list menu-avatar">
 			<view class="cu-item">
-				<view class="cu-avatar round lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);"></view>
+				<view class="cu-avatar round lg" :style="{backgroundImage: 'url('+head_url+')'}" @tap="changeHeadUrl"></view>
 				<view class="content">
 					<view class="text-black">{{fullname}}</view>
 					<view class="text-gray text-sm flex">
@@ -82,8 +82,9 @@
 					this.shopname = validUser.shopname;
 					this.fullname = validUser.fullname;
 					this.password = validUser.password;
-					this.hasLogin = validUser.hasLogin;
 					this.expire_time = validUser.expire_time;
+					this.head_url = validUser.head_url;
+					this.hasLogin = validUser.hasLogin;
 					if (this.hasLogin) {
 						//hasLoginstatus = true;
 						return true;
@@ -95,11 +96,12 @@
 		},
 		data() {
 			return {
-				fullname: '',
-				shopname: '',
 				username: '',
+				shopname: '',
+				fullname: '',
 				password: '',
 				expire_time: '',
+				head_url: '',
 				hasLogin: false
 			}
 		},
@@ -115,14 +117,55 @@
 				 */
 				const datas = {
 					username: '',
-					password: '',
-					fullname: '',
 					shopname: '',
+					fullname: '',
+					password: '',
+					expire_time: '',
+					head_url: '',
 					hasLogin: false
 				}
 				service.setUser(datas);
 				uni.navigateTo({
 					url: '../index/index?PageCur=my',
+				});
+			},
+			changeHeadUrl(){
+				//获取当前登录的用户
+				const validUser = service.getUsers();
+				if (validUser.username == undefined) {
+					uni.showToast({
+						icon: 'none',
+						title: '请先登录后再查询'
+					});
+					return;
+				}
+				uni.chooseImage({
+					count: 1, //默认9
+					sizeType: ['compressed'], //可以指定是原图还是压缩图，'original', 'compressed'
+					success: (chooseImageRes) => {
+						const tempFilePaths = chooseImageRes.tempFilePaths;
+						uni.uploadFile({
+							url: service.getAjaxUrl + 'NingChangeHeadFileUpload',
+							filePath: tempFilePaths[0],
+							name: 'file',
+							formData: {
+								'username': validUser.username
+							},
+							success: (uploadFileRes) => {
+								var data = JSON.parse(uploadFileRes.data);
+								if (data.code == 0) {
+									validUser.head_url = data.data;
+									service.setUser(validUser);
+									this.valid();
+								} else {
+									uni.showToast({
+										icon: 'none',
+										title: '上传失败:' + data.msg
+									});
+								}
+							}
+						});
+					}
 				});
 			}
 		}

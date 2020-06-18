@@ -22,6 +22,7 @@ const setUser = function(userInfo) {
 	users = {
 		username: userInfo.username,
 		password: userInfo.password,
+		head_url: userInfo.head_url,
 		fullname: userInfo.fullname,
 		shopname: userInfo.shopname,
 		expire_time: userInfo.expire_time,
@@ -30,9 +31,9 @@ const setUser = function(userInfo) {
 	uni.setStorageSync(USERS_KEY, JSON.stringify(users));
 }
 
-const getAjaxUrl = 'http://94.191.15.174:8090/api/';
+//const getAjaxUrl = 'http://94.191.15.174:8090/api/';
 //const getAjaxUrl='http://10.1.131.21:8090/api/';
-//const getAjaxUrl='http://localhost:8090/api/';
+const getAjaxUrl='http://localhost:8090/api/';
 
 export default {
 	getUsers,

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-blue" >
+		<cu-custom bgColor="bg-gradual-blue">
 			<block slot="content">录病例</block>
 		</cu-custom>
 		<form>
@@ -77,6 +77,27 @@
 					</button>
 				</view>
 			</view>
+			<view class="cu-bar bg-white margin-top">
+				<view class="action">
+					图片上传
+				</view>
+				<view class="action">
+					{{imgList.length}}/4
+				</view>
+			</view>
+			<view class="cu-form-group">
+				<view class="grid col-4 grid-square flex-sub">
+					<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
+						<image :src="imgList[index]" mode="aspectFill"></image>
+						<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
+							<text class='cuIcon-close'></text>
+						</view>
+					</view>
+					<view class="solids" @tap="ChooseImage" v-if="imgList.length<4">
+						<text class='cuIcon-cameraadd'></text>
+					</view>
+				</view>
+			</view>
 			<view class="padding flex flex-direction">
 				<button class="cu-btn bg-blue margin-tb-sm lg" @tap="bindSaveCase">保存病例</button>
 			</view>
@@ -93,7 +114,7 @@
 				fullname: '',
 				mobile: '',
 				age: '',
-				remark:'',
+				remark: '',
 				crm_user_uuid: '',
 				left_top: '',
 				right_top: '',
@@ -103,6 +124,8 @@
 				tooth_index: '',
 				tooth_diagnosis: '',
 				tooth_list: [],
+				imgList: [],
+				imgUplodList: [],
 				chief_complaint: ''
 			};
 		},
@@ -216,6 +239,57 @@
 				//删除行
 				this.tooth_list.splice(varcurrentid, 1);
 			},
+			ChooseImage() {
+				uni.chooseImage({
+					count: 1, //默认9
+					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album'], //从相册选择
+					success: (chooseImageRes) => {
+						const tempFilePaths = chooseImageRes.tempFilePaths;
+						const validUser = service.getUsers();
+						uni.uploadFile({
+							url: service.getAjaxUrl + 'NingChangeCaseFileUpload',
+							filePath: tempFilePaths[0],
+							name: 'file',
+							formData: {
+								'username': validUser.username
+							},
+							success: (uploadFileRes) => {
+								var data = JSON.parse(uploadFileRes.data);
+								if (data.code == 0) {
+									this.imgList.push(tempFilePaths[0])
+									this.imgUplodList.push(data.data);
+								} else {
+									uni.showToast({
+										icon: 'none',
+										title: '上传失败:' + data.msg
+									});
+								}
+							}
+						});
+					}
+				});
+			},
+			ViewImage(e) {
+				uni.previewImage({
+					urls: this.imgList,
+					current: e.currentTarget.dataset.url
+				});
+			},
+			DelImg(e) {
+				uni.showModal({
+					title: '召唤师',
+					content: '确定要删除这段回忆吗？',
+					cancelText: '再看看',
+					confirmText: '再见',
+					success: res => {
+						if (res.confirm) {
+							this.imgList.splice(e.currentTarget.dataset.index, 1)
+							this.imgUplodList.splice(e.currentTarget.dataset.index, 1)
+						}
+					}
+				})
+			},
 			bindSaveCase() {
 				const validUser = service.getUsers();
 				if (validUser.username == undefined) {
@@ -255,10 +329,11 @@
 						crm_user_uuid: this.crm_user_uuid,
 						fullname: this.fullname,
 						age: this.age,
-						username:validUser.username,
+						username: validUser.username,
 						mobile: this.mobile,
 						remark: this.remark,
 						tooth_list: JSON.stringify(this.tooth_list),
+						imgUplodList: JSON.stringify(this.imgUplodList),
 						chief_complaint: this.chief_complaint
 					},
 					method: "POST",
@@ -280,6 +355,8 @@
 							this.tooth_index = '';
 							this.tooth_diagnosis = '';
 							this.tooth_list = [];
+							this.imgList = [];
+							this.imgUplodList = [];
 							this.chief_complaint = '';
 						} else {
 							this.listcrmuser = [];

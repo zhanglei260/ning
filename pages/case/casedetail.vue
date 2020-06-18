@@ -82,6 +82,20 @@
 				</view>
 				<text>{{remark}}</text>
 			</view>
+			
+			<view class="cu-bar bg-white margin-top">
+				<view class="action">
+					病例图片
+				</view>
+			</view>
+			<view class="cu-form-group">
+				<view class="grid col-4 grid-square flex-sub">
+					<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
+						<image :src="imgList[index]" mode="aspectFill"></image>
+					</view>
+			
+				</view>
+			</view>
 		</form>
 
 	</view>
@@ -98,6 +112,7 @@
 				age: '',
 				remark: '',
 				chief_complaint: '',
+				imgList:[],
 				listcase: []
 			}
 		},
@@ -155,7 +170,42 @@
 						}
 					}
 				});
+				uni.request({
+					url: service.getAjaxUrl + 'NingCaseImage',
+					header: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					data: {
+						username: validUser.username,
+						main_uuid: this.main_uuid
+					},
+					method: "POST",
+					success: (e) => {
+						if (e.data.code === 0) { //登录成功后改变vuex的状态，并退出登录页面  
+							//遍历结果
+							if (e.data.data.length > 0) {
+								this.imgList = [];
+								for (var i = 0; i < e.data.data.length; i++) {
+									this.imgList.push(e.data.data[i].img_url);
+								}
+				
+							}
+						} else {
+							this.imgList = [];
+							uni.showToast({
+								icon: 'none',
+								title: '获取病例图片失败,' + e.data.msg
+							});
+						}
+					}
+				});
 
+			},
+			ViewImage(e) {
+				uni.previewImage({
+					urls: this.imgList,
+					current: e.currentTarget.dataset.url
+				});
 			}
 		}
 	}
