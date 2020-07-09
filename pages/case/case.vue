@@ -3,7 +3,7 @@
 		<cu-custom bgColor="bg-gradual-blue">
 			<block slot="content">录病例</block>
 		</cu-custom>
-		<form>
+		<form class="margin-bottom">
 			<view class="cu-form-group margin-top">
 				<view class="title">客户姓名:</view>
 				<input placeholder="请输入客户姓名" v-model="fullname" name="input"></input>
@@ -98,9 +98,10 @@
 					</view>
 				</view>
 			</view>
-			<view class="padding flex flex-direction">
-				<button class="cu-btn bg-blue margin-tb-sm lg" @tap="bindSaveCase">保存病例</button>
+			<view class="padding flex flex-direction margin-bottom">
+				<button class="cu-btn bg-blue margin-tb-sm lg margin-bottom" @tap="bindSaveCase">保存病例</button>
 			</view>
+			<view class="text-center text-gray tabbar foot margin">-------已经到底了-------</view>
 		</form>
 
 	</view>

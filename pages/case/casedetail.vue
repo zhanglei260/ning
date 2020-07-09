@@ -75,7 +75,58 @@
 					</view>
 				</view>
 			</view>
+		<view class="cu-bar bg-white solid-bottom margin-top-sm">
+				<view class="action">
+					<text class="cuIcon-title text-blue"></text>复诊病历
+				</view>
+			</view>
+			<view class="flex">
+				<view class="flex-sub">
+					<view class="grid text-center col-2">
+						<view>
+							<view class="padding bg-cyan text-black">
+								<input placeholder="右上" v-model="right_top" type="number" maxlength="2"></input>
+							</view>
+							<view class="padding bg-olive text-black">
+								<input placeholder="右下" v-model="right_bottom" type="number" maxlength="2"></input>
+							</view>
+						</view>
+						<view>
+							<view class="padding bg-olive">
+								<input placeholder="左上" v-model="left_top" type="number" maxlength="2"></input>
+							</view>
+							<view class="padding bg-cyan">
+								<input placeholder="左下" v-model="left_bottom" type="number" maxlength="2"></input>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="flex-twice">
+					<view class="cu-form-group padding-xs">
+						<textarea maxlength="-1" v-model="tooth_diagnosis" placeholder="请输入复诊结果"></textarea>
+					</view>
+				</view>
+			</view>
 
+			<view class="cu-form-group margin-top-sm">
+				<view class="title">
+					<button class="cu-btn bg-blue round" @tap="bindAddTooth">添加牙位</button>
+				</view>
+			</view>
+			<view class="cu-form-group" v-for="(item,index) in tooth_list" @click="delindex" v-bind:id='index'>
+				<view class="flex" style="width: 100%;">
+					<view class="flex-sub text-center padding-sm solid-right">{{item.tooth_position}} {{item.tooth_index}}</view>
+					<view class="flex-twice text-center padding-sm" style="width: 65%;">
+						<view>
+							<view class="text-cut">{{item.tooth_diagnosis}}</view>
+						</view>
+					</view>
+					<button class="cu-btn cuIcon bg-red sm fr margin-sm">
+						<text class="cuIcon-roundclose"></text>
+					</button>
+				</view>
+			</view>
+			
 			<view class="cu-form-group margin-top-sm">
 				<view class="title">
 					<text>备注:</text>
@@ -97,7 +148,10 @@
 				</view>
 			</view>
 		</form>
-
+		<view class="padding flex flex-direction margin-bottom">
+				<button class="cu-btn bg-blue margin-tb-sm lg margin-bottom" @tap="bindSaveCase">保存复诊</button>
+			</view>
+			<view class="text-center text-gray tabbar foot margin">-------已经到底了-------</view>
 	</view>
 </template>
 
@@ -113,6 +167,14 @@
 				remark: '',
 				chief_complaint: '',
 				imgList:[],
+				left_top: '',
+				right_top: '',
+				left_bottom: '',
+				right_bottom: '',
+				tooth_position: '',
+				tooth_index: '',
+				tooth_diagnosis: '',
+				tooth_list: [],
 				listcase: []
 			}
 		},
@@ -200,6 +262,102 @@
 					}
 				});
 
+			},
+			bindAddTooth() {
+				//添加牙位
+				if (this.left_top.length < 1 && this.left_bottom.length < 1 && this.right_top.length < 1 && this.right_bottom.length <
+					1) {
+					uni.showToast({
+						icon: 'none',
+						title: '当前牙位为空,请输入牙位信息'
+					});
+					return;
+				}
+				if (this.tooth_diagnosis.length < 1) {
+					uni.showToast({
+						icon: 'none',
+						title: '请输入复诊结果'
+					});
+					return;
+				}
+				if (this.left_top.length > 0) {
+					this.tooth_position = '左上';
+					this.tooth_index = this.left_top;
+				}
+				if (this.left_bottom.length > 0) {
+					this.tooth_position = '左下';
+					this.tooth_index = this.left_bottom;
+				}
+				if (this.right_top.length > 0) {
+					this.tooth_position = '右上';
+					this.tooth_index = this.right_top;
+				}
+				if (this.right_bottom.length > 0) {
+					this.tooth_position = '右下';
+					this.tooth_index = this.right_bottom;
+				}
+				const temp_tooth = {};
+				temp_tooth["tooth_index"] = this.tooth_index;
+				temp_tooth["tooth_position"] = this.tooth_position;
+				temp_tooth["tooth_diagnosis"] = this.tooth_diagnosis;
+				this.tooth_list.push(temp_tooth);
+				//清空
+				this.left_top = '';
+				this.left_bottom = '';
+				this.right_top = '';
+				this.right_bottom = '';
+				this.tooth_position = '';
+				this.tooth_diagnosis = '';
+			},
+			delindex: function(e) {
+				//找到删除的index
+				const varcurrentid = e.currentTarget.id;
+				//删除行
+				this.tooth_list.splice(varcurrentid, 1);
+			},
+			bindSaveCase() {
+				const validUser = service.getUsers();
+				if (validUser.username == undefined) {
+					uni.showToast({
+						icon: 'none',
+						title: '请先登录后再保存'
+					});
+					return;
+				}
+				if (this.tooth_list.length < 1) {
+					uni.showToast({
+						icon: 'none',
+						title: '请添加牙位信息'
+					});
+					return;
+				}
+				uni.request({
+					url: service.getAjaxUrl + 'NingSaveCaseItem',
+					header: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					data: {
+						main_uuid: this.main_uuid,
+						username: validUser.username,
+						tooth_list: JSON.stringify(this.tooth_list)
+					},
+					method: "POST",
+					success: (e) => {
+						if (e.data.code === 0) { //登录成功后改变vuex的状态，并退出登录页面  
+							uni.showToast({
+								icon: 'none',
+								title: '保存成功,即将清空'
+							});
+							this.tooth_list=[];
+							this.bindSearch();
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '保存失败,' + e.data.msg
+							});
+						}
+					}
+				});
 			},
 			ViewImage(e) {
 				uni.previewImage({

@@ -32,7 +32,7 @@
 				</picker>
 			</view>
 		</form>
-		<view class="cu-card article" v-for="(item,index) in listcase" @click="bindDetails(item.uuid)" v-bind:id='index' >
+		<view class="cu-card article" v-for="(item,index) in listcase"  v-bind:id='index'>
 			<view class="cu-item shadow margin-bottom">
 				<view class="title">
 					<view class="text-cut">
@@ -44,10 +44,11 @@
 					<view class="text-content" style="width: 100%;">
 						<view>手机号码:{{item.mobile}}</view>
 						<view>主诉:{{item.chief_complaint}}
-						<button class="cu-btn bg-blue fr">查看详情</button>
+							<button class="cu-btn sm bg-red margin-left fr" @tap="delCast(item.uuid)">删除</button>
+							<button class="cu-btn sm bg-blue fr" @tap="bindDetails(item.uuid)" >查看详情</button>
 						</view>
 						<view>
-							诊断:{{item.short_content}} 
+							诊断:{{item.short_content}}
 						</view>
 					</view>
 				</view>
@@ -68,6 +69,13 @@
 				listcase: [],
 				mobile: ''
 			};
+		},
+		mounted: function(option) {
+			//初始化时间
+			//this.start_date = this.DateFormat();
+			this.end_date = this.DateFormat();
+			//开始下拉刷新
+			this.bindSearch();
 		},
 		onLoad: function(option) {
 			//初始化时间
@@ -146,22 +154,67 @@
 					url: '/pages/case/casedetail?main_uuid=' + e,
 				});
 			},
+			delCast(e){
+				const validUser = service.getUsers();
+				if (validUser.username == undefined) {
+					uni.showToast({
+						icon: 'none',
+						title: '请先登录后再查询'
+					});
+					return;
+				}else{
+					var varThis = this;
+					//弹窗提示
+					uni.showModal({
+						title: '删除提示',
+						content: '确认要删除病例吗',
+						success: function(res) {
+							if (res.confirm) {
+								//console.log('用户点击确定');
+								//删除订单
+								uni.request({
+									url: service.getAjaxUrl + 'NingDeleteCase',
+									header: {
+										"Content-Type": "application/x-www-form-urlencoded"
+									},
+									data: {
+										uuid: e,
+										username: validUser.username,
+									},
+									method: "POST",
+									success: (e) => {
+										if (e.data.code === 0) { //登录成功后改变vuex的状态，并退出登录页面  
+											//varThis.tablist = ['维修中(0)', '已付款(0)', '已完成(0)'];
+											varThis.bindSearch();
+										} else {
+											uni.showToast({
+												icon: 'none',
+												title: e.data.msg
+											});
+										}
+									}
+								});
+					
+							} else if (res.cancel) {
+								//console.log('用户点击取消');
+							}
+						}
+					});
+				}
+			},
 			DateFormat() {
 				const date = new Date();
 				const year = date.getFullYear();
 				const month = date.getMonth() + 1;
 				const day = date.getDate();
-				
-				if(month < 10 &&day.length < 10){
+
+				if (month < 10 && day.length < 10) {
 					return year + '-0' + month + '-0' + day;
-				}
-				else if(month< 10 ){
+				} else if (month < 10) {
 					return year + '-0' + month + '-' + day;
-				}
-				else if(day.length < 10){
+				} else if (day.length < 10) {
 					return year + '-' + month + '-0' + day;
-				}
-				else{
+				} else {
 					return year + '-' + month + '-' + day;
 				}
 			}
